@@ -6,9 +6,10 @@ import java.sql.SQLException;
 
 public class ClienteDAO {
 
+	// Atributos de conexão
 	private Connection cn;
 
-	// Método construtor
+	// Construtor de conexão
 	public ClienteDAO() throws SQLException, ClassNotFoundException {
 		new ConnectionFactory();
 		cn = ConnectionFactory.getConnection();
@@ -24,18 +25,25 @@ public class ClienteDAO {
 		sql += "values(web2.seq_cliente.nextval,?,?,?,?,?)";
 		// Passa os parâmetros para o preparedStatement
 		try {
+			// PreparedStatement para a inserção de dados no Banco
 			PreparedStatement stmt = cn.prepareStatement(sql);
+
+			// Seta os valores
 			stmt.setString(1, cliente.getNomeCliente());
 			stmt.setString(2, cliente.getCpf());
 			stmt.setString(3, cliente.getDataNasc());
 			stmt.setString(4, cliente.getSexo());
 			stmt.setString(5, cliente.getTelefone());
 
-			// Executa o comando
+			// Executa o comando sql
 			stmt.execute();
+			stmt.close();
+			cn.close();
+
 		} catch (SQLException e) {
 			msg = e.toString();
 		}
+
 		return msg;
 	}
 }

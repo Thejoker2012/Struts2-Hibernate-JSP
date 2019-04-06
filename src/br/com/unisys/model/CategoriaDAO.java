@@ -9,40 +9,38 @@ public class CategoriaDAO {
 	// Atributos de conexão
 	private Connection cn;
 
-	// Contrutor vazio
-	public CategoriaDAO() throws SQLException {
-
-		try {
-			this.cn = ConnectionFactory.getConnection();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	// Construtor de conexão
+	public CategoriaDAO() throws SQLException, ClassNotFoundException {
+		new ConnectionFactory();
+		cn = ConnectionFactory.getConnection();
 	}
 
 	// Métodos Adiciona
-	public void Adiciona(Categoria categoria) {
-
-		String sql = "insert into web2.Categoria(id_categoria, nome_categoria, descricao) values (web2.seq_categoria.nextval, ?, ?)";
-
+	public String adiciona(Categoria categoria) {
+		String msg = "OK";
+		// Monta o comando SQL
+		String sql;
+		sql = "insert into";
+		sql += " web2.Categoria(ID_CATEGORIA, NOME_CATEGORIA, DESCRICAO)";
+		sql += "values (web2.seq_categoria.nextval, ?, ?)";
+		// Passa os parâmetros para o preparedStatement
 		try {
 			// PreparedStatement para a inserção de dados no Banco
-			PreparedStatement stmt = this.cn.prepareStatement(sql);
+			PreparedStatement stmt = cn.prepareStatement(sql);
 
 			// Seta os valores
 			stmt.setString(1, categoria.getNomeCategoria());
 			stmt.setString(2, categoria.getDescricao());
 
-			// Comandos para executar
+			// Executa o comando sql
 			stmt.execute();
 			stmt.close();
-
-			System.out.println("Gravado com Sucesso!");
 			cn.close();
+
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			msg = e.toString();
 		}
 
+		return msg;
 	}
-
 }

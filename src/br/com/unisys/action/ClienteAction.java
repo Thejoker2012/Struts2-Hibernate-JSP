@@ -27,6 +27,7 @@ public class ClienteAction extends ActionSupport{
 	@Action(value="adicionaCliente",
 			results={@Result(name="OK",location="/cadastro_ok.jsp"),
 			         @Result(name="ERRO",location="/cadastro_erro.jsp")})
+	
 	public String execute() throws ClassNotFoundException, SQLException{
 		ClienteDAO dao = new ClienteDAO();
 		return dao.adiciona(cliente);
